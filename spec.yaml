@@ -1,0 +1,423 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: "Delilah Restó || Sebastian Natale"
+  description: "Una API para la administracion de restaurantes!"
+host: "localhost:3000"
+paths:
+  /productos:
+    get:
+      tags:
+        - "Productos"
+      summary: "Devuelve inventario."
+      description: "Devuelve una lista de productos disponibles. Tambien se puede por ID individual agregandolo al path!"
+      produces:
+        - "application/json"
+      parameters:
+      - in: "header"
+        name: "authorization"
+        required: true
+        type: "string"
+        description: "Authorization: 'wkakjbadue4.t3gfddvdsgh46.y45j5yrhedtg' (NO usar la keyword 'bearer')"
+      responses:
+        200:
+          description: "Devuelve un JSON con la lista"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/producto"
+    post:
+      tags:
+        - "Productos"
+      summary: "Añade un producto nuevo"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "header"
+          name: "authorization"
+          required: true
+          type: "string"
+          description: "Authorization: 'wkakjbadue4.t3gfddvdsgh46.y45j5yrhedtg' (NO usar la keyword 'bearer')"
+        - in: "body"
+          name: "body"
+          description: "Producto a añadir"
+          required: true
+          schema:
+            $ref: "#/definitions/carga_producto"
+      responses:
+        200:
+          description: "Producto creado!"
+          schema:
+            type: "object"
+            properties:
+              product_id:
+                type: "number"
+                example: 2
+              nombre:
+                type: "string"
+                example: "Pizza"
+              precio:
+                type: "number"
+                example: 132
+              link_foto:
+                type: "string"
+                example: placeholder.link/ejemplo
+        400:
+          description: "Error en solicitud! Los datos solicitados son nombre, precio y link_foto!"
+  /productos/{id}:
+    put:
+      tags:
+        - "Productos"
+      summary: "Actualizar un producto"
+      description: "Actualiza datos de un producto. SOLO SE PUEDE UN DATO A LA VEZ!!!"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID del producto"
+          required: true
+          type: "integer"
+          format: "int64"
+        - in: "header"
+          name: "authorization"
+          description: "Authorization: 'wkakjbadue4.t3gfddvdsgh46.y45j5yrhedtg' (NO usar la keyword 'bearer')"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "body"
+          description: "Producto a añadir"
+          required: true
+          schema:
+            $ref: "#/definitions/carga_producto"
+      responses:
+        202:
+          description: "Exito!"
+          schema:
+            $ref: "#/definitions/producto"
+        404:
+          description: "No se encontraron datos a actualizar"
+    delete:
+      tags:
+        - "Productos"
+      summary: "Borra un producto"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID del producto"
+          required: true
+          type: "integer"
+          format: "int64"
+        - in: "header"
+          name: "authorization"
+          description: "Authorization: 'wkakjbadue4.t3gfddvdsgh46.y45j5yrhedtg' (NO usar la keyword 'bearer')"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Borrado!"
+        404:
+          description: "Producto no encontrado!"
+  /pedidos:
+    get:
+      tags:
+        - "Pedidos"
+      summary: "Devuelve lista pedidos"
+      description: "Devuelve una lista de tods las ordenes logueadas"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "header"
+          name: "authorization"
+          description: "Authorization: 'wkakjbadue4.t3gfddvdsgh46.y45j5yrhedtg' (NO usar la keyword 'bearer')"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Exito!"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/ordenes"
+    post:
+      tags:
+        - "Pedidos"
+      summary: "Añadir un pedido nuevo"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "header"
+          name: "authorization"
+          required: true
+          type: "string"
+          description: "Authorization: 'wkakjbadue4.t3gfddvdsgh46.y45j5yrhedtg' (NO usar la keyword 'bearer')"
+        - in: "body"
+          name: "body"
+          description: "Producto a añadir"
+          required: true
+          schema:
+            $ref: "#/definitions/orden_cargada"
+      responses:
+        200:
+          description: "Exito!"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/ordenes"
+  /pedidos/{id}:
+    put:
+      tags:
+        - "Pedidos"
+      summary: "Actualiza el estado de la orden"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "id"
+          description: "El ID de la orden"
+          required: true
+          type: "integer"
+          format: "int64"
+        - in: "header"
+          name: "authorization"
+          description: "Authorization: 'wkakjbadue4.t3gfddvdsgh46.y45j5yrhedtg' (NO usar la keyword 'bearer')"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "body"
+          description: "Item a editar"
+          required: true
+          schema:
+            $ref: "#/definitions/actualiEstado"
+      responses:
+        202:
+          description: "Acepted"
+          schema:
+            $ref: "#/definitions/ordenes"
+    delete:
+      tags:
+        - "Pedidos"
+      summary: "Borra una orden"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "id"
+          description: "El ID de la orden"
+          required: true
+          type: "integer"
+          format: "int64"
+        - in: "header"
+          name: "authorization"
+          description: "Authorization: 'wkakjbadue4.t3gfddvdsgh46.y45j5yrhedtg' (NO usar la keyword 'bearer')"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Exito!"
+  /usuarios:
+    get:
+      tags:
+        - "Usuarios"
+      summary: "Devuelve lista de usuarios"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "header"
+          name: "authorization"
+          description: "Authorization: 'wkakjbadue4.t3gfddvdsgh46.y45j5yrhedtg' (NO usar la keyword 'bearer')"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Exito!"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/usuario_registrado"
+    post:
+      tags:
+        - "Usuarios"
+      summary: "Crear usuario"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "header"
+          name: "authorization"
+          required: true
+          type: "string"
+          description: "Authorization: 'wkakjbadue4.t3gfddvdsgh46.y45j5yrhedtg' (NO usar la keyword 'bearer')"
+        - in: "body"
+          name: "body"
+          description: "Datos de usuario"
+          required: true
+          schema:
+            $ref: "#/definitions/usuario_registrado"
+      responses:
+        201:
+          description: "Usuario creado!"
+          schema:
+            $ref: "#/definitions/user_id"
+  /usuarios/login:
+    post:
+      tags:
+        - "Usuarios"
+      summary: "Inicia sesion en la tienda"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "header"
+          name: "authorization"
+          required: true
+          type: "string"
+          description: "Authorization: 'wkakjbadue4.t3gfddvdsgh46.y45j5yrhedtg' (NO usar la keyword 'bearer')"
+        - name: "credenciales"
+          in: "body"
+          description: "El nombreUser y la password"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              nombreUser:
+                type: "string"
+              password:
+                type: "string"
+      responses:
+        200:
+          description: "Exito!"
+          schema:
+            type: "string"
+            example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiU2ViYXNOYXRhbGUiLCJhZG1pbiI6InRydWUiLCJpYXQiOjE1OTI5NDY2MTksImV4cCI6MTU5Mjk1MDIxOX0.tk7L95BPig2Sdo9Hds_EbQQeOP1rgANlzDnTVC8AwDQ"
+definitions:
+  ordenes:
+    type: "object"
+    properties:
+      order_id:
+        type: "number"
+        example: 3
+      descripcion:
+        type: "string"
+        example: "1x Hamburguesa"
+      precio:
+        type: "integer"
+        example: 312
+      metodoPago:
+        type: "string"
+        example: "efectivo"
+      nombreUser:
+        type: "string"
+        example: "usuario123"
+      direccion:
+        type: "string"
+        example: "Calle Falsa 123"
+      productos:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            product_id:
+              type: "number"
+              example: 2
+            cantidadProducto:
+              type: "integer"
+              example: 1
+            nombre:
+              type: "string"
+              example: "Pizza"
+            precio:
+              type: "integer"
+              example: 142
+  orden_cargada:
+    type: "object"
+    properties:
+      productos:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            product_id:
+              type: "number"
+              example: 3
+            cantidad:
+              type: "integer"
+              example: 1
+      precio:
+        type: "integer"
+        example: 324
+      metodoPago:
+        type: "string"
+        example: "efectivo"
+  usuario_registrado:
+    type: "object"
+    properties:
+      nombreUser:
+        type: "string"
+      nombreCompleto:
+        type: "string"
+      email:
+        type: "string"
+      telefono:
+        type: "number"
+        example: 2225555 (el telefono debe ser unico para cada usuario)
+      direccion:
+        type: "string"
+      password:
+        type: "string"
+      admin:
+        type: "string"
+        example: "true"
+  user_id:
+    type: "object"
+    properties:
+      user_id:
+        type: "number"
+        example: 2
+  actualiEstado:
+    type: "object"
+    properties:
+      estado:
+        type: "string"
+        description: "Estado de la orden"
+        enum:
+          - "nuevo"
+          - "confirmado"
+          - "preparando"
+          - "en entrega"
+          - "entregado"
+  producto:
+    type: "object"
+    properties:
+      product_id:
+        type: "integer"
+        example: "15"
+      nombre:
+        type: "string"
+        example: "Pizza"
+      precio:
+        type: "number"
+        example: 365
+      link_foto:
+        type: "string"
+        example: "placeholder.link/ejemplo"
+  carga_producto:
+    type: "object"
+    properties:
+      nombre:
+        type: "string"
+        example: "Pizza"
+      precio:
+        type: "integer"
+        example: 253
+      link_foto:
+        type: "string"
+        example: "placeholder.link/ejemplo"
