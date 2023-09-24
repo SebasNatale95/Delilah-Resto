@@ -1,34 +1,34 @@
 # Delilah-Resto
-**Una API para el manejo de restaurantes.**
+**An API for restaurants**
 
-Este proyecto consiste en una API RESTful basada en Node.JS y MySQL para la administracion de restaurantes online que permite que usuarios regulares puedan crear una cuenta, ver distintos productos, tener platos favoritos y crear ordenes, mientras los usuarios administradores controlan accesos y manejo de operaciones CRUD en cuanto a ordenes, usuarios y productos.
+This project consists of a RESTful API based on Node.JS and MySQL for the administration of online restaurants that allows regular users to create an account, view different products, have favorite dishes and create orders, while administrator users control access and management of CRUD operations regarding orders, users and products.
 
-# Primeros pasos
-**Clonar la repo.**
+# First things first
+**Clone the repo**
 ````
 git clone https://github.com/SebasNatale/Delilah-Resto
 ````
-_La base de datos está alojada en remotemysql.com y el acceso a la misma ya está incluido en la API. No es necesario construirla desde cero!_
+_the DB was deployed to remotemysql.com and access keys are included in the repo, no need to build it from scratch!_
 
-[Queries para crear las tablas](/estructuraDB.sql)
+[Queries to create the tables](/estructuraDB.sql)
 
-**Instalar las dependencias.**
+**Install the dependencies**
 ````
 npm install
 ````
 
-**Ejecutar la API**
+**Run the API**
 ````
 node index
 ````
 
-_El dominio de la API es "localhost:3000"_
+_The API domain is "localhost:3000"_
 
-# Especificacion de la API
+# API spec
 [Documento](/spec.yaml)
 
-**Indicaciónes especiales!**
+**Special indications**
 
-- Al registrar un usuario nuevo, esta API pedirá un booleano para la key "admin". Esto es unicamente con propositos demonstrativos y no representa el comportamiento indicado en un entorno de produccion.
+- When creating a new user, the API will ask for a boolean for the "admin" key. That's only for demo purposes and does not represent production behavior.
 
-- Al enviar el token, NO usar la keyword "bearer" en el valor del header "Authorization".
+- When sending the token, do NOT use the keyword "bearer" as value for the "Authorization" header.
