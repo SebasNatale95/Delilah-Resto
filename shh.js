@@ -1,2 +1,2 @@
-const shh = "\[tW4:hX$![tP7`#";
+const shh = "ThisIsWhereYourAPIKeyGoes";
 module.exports = shh;
