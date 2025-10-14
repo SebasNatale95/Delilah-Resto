@@ -11,7 +11,7 @@ const server = express();
 server.use(cors());
 server.use(parser.json());
 server.listen(3000, () => console.log("Servidor iniciado!"));
-const sql = new sequelize("mysql://lJREna0GOO:Vf5yMxDH7x@remotemysql.com:3306/lJREna0GOO");
+const sql = new sequelize("mysql://blahblahblah.etc");
 sql.authenticate().then(() => console.log("DB conectada!"));
 
 //--------------------------------------------------------- MIDDLEWARES Y FUNCIONES
